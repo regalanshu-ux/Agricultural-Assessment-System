@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<h:html xmlns="http://www.w3.org/2002/xforms"
+        xmlns:h="http://www.w3.org/1999/xhtml"
+        xmlns:ev="http://www.w3.org/2001/xml-events"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:jr="http://openrosa.org/javarosa">
+  <h:head>
+    <model>
+      <instance>
+        <data id="assessment_form">
+          <meta>
+            <instanceID/> 
+          </meta>
+
+          <enumerator_name/>
+          <enumeration_date/>
+          <household_id/>
+          <respondent_name/>
+          <respondent_phone/>
+          <gps_location/>
+          <household_size/>
+          <total_operated_area/>
+          <tenure/>
+          <number_of_plots/>
+
+          <plots>
+            <plot>
+              <plot_id/>
+              <plot_area/>
+              <distance_to_water_m/>
+              <primary_crop/>
+              <secondary_crops/>
+            </plot>
+          </plots>
+
+          <wells>
+            <well>
+              <well_id/>
+              <well_type/>
+              <well_depth_m/>
+              <static_water_level_m/>
+              <year_drilled/>
+              <pump_type/>
+              <yield_estimate_lph/>
+              <well_photo/>
+            </well>
+          </wells>
+
+          <cropping_records>
+            <crop>
+              <crop_name/>
+              <crop_area/>
+              <season/>
+              <yield_reported/>
+            </crop>
+          </cropping_records>
+
+          <irrigation_sources/>
+          <notes/>
+        </data>
+      </instance>
+
+      <!-- binds -->
+      <bind nodeset="/data/enumerator_name" type="string" required="true()"/>
+      <bind nodeset="/data/enumeration_date" type="date" required="true()"/>
+      <bind nodeset="/data/household_id" type="string" required="true()"/>
+      <bind nodeset="/data/respondent_name" type="string"/>
+      <bind nodeset="/data/respondent_phone" type="string"/>
+      <bind nodeset="/data/gps_location" type="geopoint"/>
+      <bind nodeset="/data/household_size" type="int"/>
+      <bind nodeset="/data/total_operated_area" type="decimal"/>
+      <bind nodeset="/data/tenure" type="string"/>
+      <bind nodeset="/data/number_of_plots" type="int"/>
+
+      <bind nodeset="/data/plots/plot/plot_id" type="string"/>
+      <bind nodeset="/data/plots/plot/plot_area" type="decimal"/>
+      <bind nodeset="/data/plots/plot/distance_to_water_m" type="decimal"/>
+      <bind nodeset="/data/plots/plot/primary_crop" type="string"/>
+      <bind nodeset="/data/plots/plot/secondary_crops" type="string"/>
+
+      <bind nodeset="/data/wells/well/well_id" type="string"/>
+      <bind nodeset="/data/wells/well/well_type" type="string"/>
+      <bind nodeset="/data/wells/well/well_depth_m" type="decimal"/>
+      <bind nodeset="/data/wells/well/static_water_level_m" type="decimal"/>
+      <bind nodeset="/data/wells/well/year_drilled" type="int"/>
+      <bind nodeset="/data/wells/well/pump_type" type="string"/>
+      <bind nodeset="/data/wells/well/yield_estimate_lph" type="decimal"/>
+      <bind nodeset="/data/wells/well/well_photo" type="binary"/>
+
+      <bind nodeset="/data/cropping_records/crop/crop_name" type="string"/>
+      <bind nodeset="/data/cropping_records/crop/crop_area" type="decimal"/>
+      <bind nodeset="/data/cropping_records/crop/season" type="string"/>
+      <bind nodeset="/data/cropping_records/crop/yield_reported" type="decimal"/>
+
+      <bind nodeset="/data/irrigation_sources" type="string"/>
+      <bind nodeset="/data/notes" type="string"/>
+
+    </model>
+  </h:head>
+
+  <h:body>
+    <h:group>
+      <h:label>Household & Enumerator Info</h:label>
+      <input ref="/data/enumerator_name">
+        <label>Enumerator name</label>
+      </input>
+      <input ref="/data/enumeration_date">
+        <label>Enumeration date</label>
+      </input>
+      <input ref="/data/household_id">
+        <label>Household ID</label>
+      </input>
+      <input ref="/data/respondent_name">
+        <label>Respondent name</label>
+      </input>
+      <input ref="/data/respondent_phone">
+        <label>Respondent phone</label>
+      </input>
+      <upload ref="/data/gps_location">
+        <label>GPS location (tap to capture)</label>
+      </upload>
+      <input ref="/data/household_size">
+        <label>Household size (persons)</label>
+      </input>
+      <input ref="/data/total_operated_area">
+        <label>Total operated area (hectares)</label>
+      </input>
+      <select1 ref="/data/tenure">
+        <label>Tenure status</label>
+        <item>
+          <label>Owned</label>
+          <value>owned</value>
+        </item>
+        <item>
+          <label>Tenant</label>
+          <value>tenant</value>
+        </item>
+        <item>
+          <label>Sharecropper</label>
+          <value>sharecropper</value>
+        </item>
+      </select1>
+      <input ref="/data/number_of_plots">
+        <label>Number of plots</label>
+      </input>
+    </h:group>
+
+    <repeat nodeset="/data/plots/plot">
+      <label>Plot details (repeat for each plot)</label>
+      <input ref="/data/plots/plot/plot_id">
+        <label>Plot ID</label>
+      </input>
+      <input ref="/data/plots/plot/plot_area">
+        <label>Plot area (hectares)</label>
+      </input>
+      <input ref="/data/plots/plot/distance_to_water_m">
+        <label>Distance to primary water source (m)</label>
+      </input>
+      <input ref="/data/plots/plot/primary_crop">
+        <label>Primary crop on this plot</label>
+      </input>
+      <input ref="/data/plots/plot/secondary_crops">
+        <label>Secondary crops / rotation</label>
+      </input>
+    </repeat>
+
+    <repeat nodeset="/data/wells/well">
+      <label>Well / Borewell (repeat for each well)</label>
+      <input ref="/data/wells/well/well_id">
+        <label>Well ID</label>
+      </input>
+      <select1 ref="/data/wells/well/well_type">
+        <label>Well type</label>
+        <item><label>Borewell / Tube well</label><value>borewell</value></item>
+        <item><label>Dugwell / Shallow well</label><value>dugwell</value></item>
+        <item><label>Pond / Tank</label><value>pond</value></item>
+        <item><label>Other</label><value>other</value></item>
+      </select1>
+      <input ref="/data/wells/well/well_depth_m">
+        <label>Well depth (m)</label>
+      </input>
+      <input ref="/data/wells/well/static_water_level_m">
+        <label>Static water level from ground (m)</label>
+      </input>
+      <input ref="/data/wells/well/year_drilled">
+        <label>Year drilled (approx)</label>
+      </input>
+      <input ref="/data/wells/well/pump_type">
+        <label>Pump type</label>
+      </input>
+      <input ref="/data/wells/well/yield_estimate_lph">
+        <label>Estimated yield (L/hr)</label>
+      </input>
+      <upload ref="/data/wells/well/well_photo">
+        <label>Photo of well/pump</label>
+      </upload>
+    </repeat>
+
+    <repeat nodeset="/data/cropping_records/crop">
+      <label>Crop record (repeat for each crop)</label>
+      <input ref="/data/cropping_records/crop/crop_name">
+        <label>Crop name</label>
+      </input>
+      <input ref="/data/cropping_records/crop/crop_area">
+        <label>Area (hectares)</label>
+      </input>
+      <input ref="/data/cropping_records/crop/season">
+        <label>Season / months</label>
+      </input>
+      <input ref="/data/cropping_records/crop/yield_reported">
+        <label>Yield (kg/ha or as reported)</label>
+      </input>
+    </repeat>
+
+    <input ref="/data/irrigation_sources">
+      <label>Primary irrigation sources (comma-separated)</label>
+    </input>
+
+    <input ref="/data/notes">
+      <label>Enumerator notes / observations</label>
+    </input>
+
+  </h:body>
+</h:html>

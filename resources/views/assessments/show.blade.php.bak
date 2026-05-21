@@ -1,0 +1,98 @@
+@extends('layouts.app')
+
+@section('title', 'Assessment Details & Recommendations')
+
+@section('content')
+<div class="page-title">
+    <h1>Assessment Details & Recommendations</h1>
+    <a href="{{ route('assessments.index') }}" class="btn" style="background: white; border: 1px solid var(--border-color); color: var(--text-main);">
+        Back to Dashboard
+    </a>
+</div>
+
+<div class="dashboard-grid">
+    <!-- Assessment Details Card -->
+    <div class="card">
+        <div class="card-header">
+            <h2 class="card-title">Submitted Information</h2>
+        </div>
+        <div style="font-family: 'Inter', sans-serif; line-height: 1.8;">
+            <p><strong>Farmer Name:</strong> {{ $assessment->farmer_name }}</p>
+            <p><strong>Region/District:</strong> {{ $assessment->region }}</p>
+            <p><strong>Land Holding Size:</strong> {{ $assessment->land_holding_size }} Hectares</p>
+            <p><strong>Irrigation Source:</strong> {{ $assessment->irrigation_source }}</p>
+            <p><strong>Cropping Pattern:</strong> {{ $assessment->cropping_pattern }}</p>
+            <p><strong>Well Depth:</strong> {{ $assessment->well_depth ? $assessment->well_depth . ' Meters' : 'N/A' }}</p>
+        </div>
+    </div>
+
+    <!-- Recommendations Card -->
+    <div class="card" style="border: 2px solid var(--primary); background-color: var(--primary-light);">
+        <div class="card-header" style="border-bottom-color: var(--primary);">
+            <h2 class="card-title" style="color: var(--primary-hover); display: flex; align-items: center; gap: 0.5rem;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
+                AI Smart Improvements
+            </h2>
+        </div>
+        <div style="margin-top: 1rem;">
+            @if(count($suggestions) > 0)
+                <ul style="list-style-type: none; padding-left: 0;">
+                    @foreach($suggestions as $suggestion)
+                        <li style="margin-bottom: 1rem; display: flex; align-items: start; gap: 0.75rem;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 0.25rem;"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                            <span style="color: var(--text-main); font-weight: 500;">{{ $suggestion }}</span>
+                        </li>
+                    @endforeach
+                </ul>
+            @else
+                <p>No specific recommendations at this time.</p>
+            @endif
+        </div>
+    </div>
+</div>
+
+<div class="dashboard-grid" style="margin-top: 2rem;">
+    <!-- Seasonal Crop Prediction Card -->
+    <div class="card" style="border: 2px solid #3b82f6; background-color: #eff6ff;">
+        <div class="card-header" style="border-bottom-color: #3b82f6;">
+            <h2 class="card-title" style="color: #1d4ed8; display: flex; align-items: center; gap: 0.5rem;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                Seasonal Crop Prediction
+            </h2>
+        </div>
+        <div style="margin-top: 1rem; font-family: 'Inter', sans-serif;">
+            <p><strong>Current Season:</strong> <span style="color: #2563eb; font-weight: 600;">{{ $cropPrediction['season'] }}</span></p>
+            <p><strong>Recommended Crops:</strong></p>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem;">
+                @foreach($cropPrediction['crops'] as $crop)
+                    <span style="background: #3b82f6; color: white; padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.875rem; font-weight: 500;">
+                        {{ $crop }}
+                    </span>
+                @endforeach
+            </div>
+            <p style="margin-top: 1rem; font-size: 0.875rem; color: #475569;">
+                <strong>AI Confidence Score:</strong> {{ $cropPrediction['confidence'] }}
+            </p>
+        </div>
+    </div>
+
+    <!-- Weather Forecast Card -->
+    <div class="card" style="border: 2px solid #f59e0b; background-color: #fffbeb;">
+        <div class="card-header" style="border-bottom-color: #f59e0b;">
+            <h2 class="card-title" style="color: #b45309; display: flex; align-items: center; gap: 0.5rem;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                Weather Forecast (Next 30 Days)
+            </h2>
+        </div>
+        <div style="margin-top: 1rem; font-family: 'Inter', sans-serif; line-height: 1.8;">
+            <p><strong>General Condition:</strong> {{ $weatherForecast['condition'] }}</p>
+            <p><strong>Est. Temperature Range:</strong> {{ $weatherForecast['temperature'] }}</p>
+            <p><strong>Expected Rainfall:</strong> {{ $weatherForecast['rainfall'] }}</p>
+            
+            <div style="margin-top: 1rem; padding: 1rem; background-color: #fef3c7; border-left: 4px solid #f59e0b; border-radius: 4px;">
+                <p style="margin: 0; color: #92400e;"><strong>Advisory:</strong> {{ $weatherForecast['advisory'] }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
